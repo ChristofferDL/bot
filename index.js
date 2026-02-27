@@ -1,3 +1,6 @@
+console.log("TOKEN EXISTS:", !!TOKEN);
+console.log("GUILD ID:", GUILD_ID);
+
 const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 
@@ -67,4 +70,6 @@ app.listen(PORT, () => {
   console.log(`API running on port ${PORT}`);
 });
 
-client.login(TOKEN);
+client.login(TOKEN)
+  .then(() => console.log("Login successful"))
+  .catch(err => console.error("Login failed:", err));
