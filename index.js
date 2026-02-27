@@ -1,6 +1,3 @@
-console.log("TOKEN EXISTS:", !!TOKEN);
-console.log("GUILD ID:", GUILD_ID);
-
 const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 
@@ -9,6 +6,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.DISCORD_TOKEN;
 const GUILD_ID = process.env.GUILD_ID;
+
+// ✅ DEBUG BELOW DECLARATION
+console.log("TOKEN EXISTS:", !!TOKEN);
+console.log("GUILD ID:", GUILD_ID);
 
 if (!TOKEN) {
   console.error("DISCORD_TOKEN missing");
@@ -73,3 +74,4 @@ app.listen(PORT, () => {
 client.login(TOKEN)
   .then(() => console.log("Login successful"))
   .catch(err => console.error("Login failed:", err));
+
