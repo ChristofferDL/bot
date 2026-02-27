@@ -1,15 +1,11 @@
-const express = require("express");
 const { Client, GatewayIntentBits } = require("discord.js");
 
-const app = express();
-
-const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.DISCORD_TOKEN;
 
 console.log("TOKEN EXISTS:", !!TOKEN);
 
 if (!TOKEN) {
-  console.error("DISCORD_TOKEN missing");
+  console.error("NO TOKEN");
   process.exit(1);
 }
 
@@ -18,21 +14,14 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-  console.log("READY:", client.user.tag);
+  console.log("READY EVENT FIRED");
+  console.log("Logged in as:", client.user.tag);
 });
 
-client.on("error", console.error);
+client.on("error", (err) => {
+  console.error("CLIENT ERROR:", err);
+});
 
 client.login(TOKEN)
-  .then(() => console.log("LOGIN SUCCESS"))
+  .then(() => console.log("LOGIN PROMISE RESOLVED"))
   .catch(err => console.error("LOGIN FAILED:", err));
-
-// REQUIRED FOR RENDER
-app.get("/", (req, res) => {
-  res.send("Bot is running.");
-});
-
-app.listen(PORT, () => {
-  console.log(`Web server listening on port ${PORT}`);
-});
-
