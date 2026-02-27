@@ -7,20 +7,21 @@ const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.DISCORD_TOKEN;
 const GUILD_ID = process.env.GUILD_ID;
 
-// ✅ DEBUG BELOW DECLARATION
+// ===== DEBUG ENV =====
 console.log("TOKEN EXISTS:", !!TOKEN);
 console.log("GUILD ID:", GUILD_ID);
 
 if (!TOKEN) {
-  console.error("DISCORD_TOKEN missing");
+  console.error("DISCORD_TOKEN missing. Exiting.");
   process.exit(1);
 }
 
 if (!GUILD_ID) {
-  console.error("GUILD_ID missing");
+  console.error("GUILD_ID missing. Exiting.");
   process.exit(1);
 }
 
+// ===== DISCORD CLIENT =====
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -29,10 +30,21 @@ const client = new Client({
   ]
 });
 
-client.once("ready", () => {
+// ===== EVENTS =====
+client.on("ready", () => {
+  console.log("READY EVENT FIRED");
   console.log(`Logged in as ${client.user.tag}`);
 });
 
+client.on("error", (err) => {
+  console.error("CLIENT ERROR:", err);
+});
+
+client.on("shardError", (err) => {
+  console.error("SHARD ERROR:", err);
+});
+
+// ===== API ROUTES =====
 app.get("/api/stats", async (req, res) => {
   try {
     const guild = await client.guilds.fetch(GUILD_ID);
@@ -67,11 +79,12 @@ app.get("/api/member/:id", async (req, res) => {
   }
 });
 
+// ===== START SERVER =====
 app.listen(PORT, () => {
   console.log(`API running on port ${PORT}`);
 });
 
+// ===== LOGIN =====
 client.login(TOKEN)
   .then(() => console.log("Login successful"))
   .catch(err => console.error("Login failed:", err));
-
