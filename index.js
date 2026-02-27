@@ -23,7 +23,9 @@ client.on("ready", () => {
 
 client.on("error", console.error);
 
-client.login(TOKEN);
+client.login(TOKEN)
+  .then(() => console.log("LOGIN SUCCESS"))
+  .catch(err => console.error("LOGIN FAILED:", err));
 
 // REQUIRED FOR RENDER
 app.get("/", (req, res) => {
@@ -33,3 +35,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Web server listening on port ${PORT}`);
 });
+
